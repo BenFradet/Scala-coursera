@@ -23,4 +23,18 @@ class CountChangeSuite extends FunSuite {
   test("countChange: unsorted CHF") {
     assert(countChange(300,List(500,5,50,100,20,200,10)) === 1022)
   }
+
+  test("countChange: throws if negative amount") {
+    intercept[IllegalArgumentException] {
+      countChange(-2, List(1, 2, 3))
+    }
+  }
+
+  test("countChange: 0 ways if empty list") {
+    assert(countChange(20, List()) === 0)
+  }
+
+  test("countChange: 0 ways if amount equal 0") {
+    assert(countChange(0, List(1, 2, 3)) === 0)
+  }
 }

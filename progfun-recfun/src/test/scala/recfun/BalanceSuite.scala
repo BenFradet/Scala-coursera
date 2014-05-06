@@ -14,7 +14,8 @@ class BalanceSuite extends FunSuite {
   }
 
   test("balance: 'I told him ...' is balanced") {
-    assert(balance("I told him (that it's not (yet) done).\n(But he wasn't listening)".toList))
+    assert(balance("""I told him (that it's not (yet) done).\n
+      (But he wasn't listening)""".toList))
   }
 
   test("balance: ':-)' is unbalanced") {
@@ -23,5 +24,13 @@ class BalanceSuite extends FunSuite {
 
   test("balance: counting is not enough") {
     assert(!balance("())(".toList))
+  }
+
+  test("balance: empty string is balanced") {
+    assert(balance("".toList))
+  }
+
+  test("balance: no brackets is balanced") {
+    assert(balance("no brackets is balanced".toList))
   }
 }
