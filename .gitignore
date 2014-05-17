@@ -4,17 +4,17 @@
 *.class
 *.log
 
-**/.cache
-**/.history
-**/.classpath
-**/.project
-**/.settings/
-**/.lib/
-**/dist/
-**/target/
-**/lib_managed/
-**/src_managed/
-**/project/
+.cache/
+.history/
+.classpath
+.project
+.settings/
+.lib/
+dist/
+target/
+lib_managed/
+src_managed/
+project/
 
-**/.scala-dependencies
-**/.worksheet
+.scala-dependencies
+.worksheet
