@@ -68,17 +68,9 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def mostRetweeted: Tweet = {
-    if(isEmpty)
-      throw new NoSuchElementException("no most retweeted tweet in empty set")
-    else
-      mostRtAcc(t => 
-          t.retweets >= Int.MinValue, new Tweet("", "", Int.MinValue))
-  }
+  def mostRetweeted: Tweet
 
-  def mostRtAcc(p: Tweet => Boolean, acc: Tweet): Tweet
-
-  def isEmpty: Boolean
+  def mostRetweetedAcc(acc: Tweet): Tweet
 
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -124,11 +116,11 @@ class Empty extends TweetSet {
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet =
     acc
 
-  def mostRtAcc(p: Tweet => Boolean, acc: Tweet): Tweet =
-    acc
+  def mostRetweeted: Tweet =
+    throw new NoSuchElementException("mostRetweeted on empty set")
 
-  def isEmpty: Boolean =
-    true
+  def mostRetweetedAcc(acc: Tweet) =
+    acc
 
   def descendingByRetweet: TweetList =
     Nil
@@ -155,16 +147,15 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
       right.filterAcc(p, left.filterAcc(p, acc))
   }
 
-  def mostRtAcc(p: Tweet => Boolean, acc: Tweet): Tweet = {
-    if(p(elem))
-      right.mostRtAcc(t => t.retweets > elem.retweets,
-        left.mostRtAcc(t => t.retweets > elem.retweets, elem))
-    else
-      right.mostRtAcc(p, left.mostRtAcc(p, acc))
-  }
+  def mostRetweeted: Tweet =
+    mostRetweetedAcc(elem)
 
-  def isEmpty: Boolean =
-    false
+  def mostRetweetedAcc(acc: Tweet): Tweet = {
+    if(elem.retweets > acc.retweets)
+      right.mostRetweetedAcc(left.mostRetweetedAcc(elem))
+    else
+      right.mostRetweetedAcc(left.mostRetweetedAcc(acc))
+  }
 
   def descendingByRetweet: TweetList =
     new Cons(mostRetweeted, remove(mostRetweeted).descendingByRetweet)
