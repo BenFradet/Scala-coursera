@@ -48,7 +48,6 @@ object Anagrams {
     }
     wordOccurrences(concatenate(s))
   }
-    
 
   /** The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
    *  the words that have that occurrence count.
@@ -167,6 +166,18 @@ object Anagrams {
    *
    *  Note: There is only one anagram of an empty sentence.
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
-
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+    def helper(occurrences: Occurrences): List[Sentence] = occurrences match {
+      case Nil => List(Nil)
+      case list => for {
+        combinations <- combinations(occurrences)
+        word <- dictionaryByOccurrences.get(combinations) match {
+          case Some(words) => words
+          case None => List()
+        }
+        rest <- helper(subtract(occurrences, combinations))
+      } yield word :: rest
+    }
+    helper(sentenceOccurrences(sentence))
+  }
 }
