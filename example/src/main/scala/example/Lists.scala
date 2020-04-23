@@ -59,7 +59,7 @@ object Lists {
   }
 
   def maxImpl(xs: List[Int], currentMax: Int): Int = {
-    if(xs.tail.isEmpty) {
+    if(xs.isEmpty) {
       currentMax
     }
     else {
